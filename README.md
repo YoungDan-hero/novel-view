@@ -53,15 +53,9 @@ A local TXT novel reader disguised as a macOS Terminal. Press **Space** to flip 
 | `o` | 导入本地 TXT |
 | `⌘ Space` | 全局快捷键，任何界面下强制秒切伪装 |
 
-## 安装
+## 快速开始
 
-### 直接下载（推荐）
-
-到 [Releases](../../releases) 下载 `Terminal-x.y.z-arm64.dmg`，打开后把 `Terminal.app` 拖入「应用程序」。
-
-> 由于未做苹果签名，首次打开若被 Gatekeeper 拦截，请**右键 App → 打开 → 再点"打开"**，之后即可正常双击启动。
-
-### 从源码运行
+克隆仓库，安装依赖，本地运行：
 
 ```bash
 git clone https://github.com/<your-name>/terminal-reader.git
