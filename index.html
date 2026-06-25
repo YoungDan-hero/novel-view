@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Terminal — bash</title>
 <style>
+  /* ===== 暗色主题(默认) ===== */
   :root {
     --bg: #1e1e1e;
     --fg: #c8c8c8;
@@ -14,6 +15,63 @@
     --gray: #6a6a6a;
     --red: #e06c75;
     --prompt: #4ec07a;
+    --titlebar-bg: #323233;
+    --titlebar-border: #1a1a1a;
+    --title-text: #b0b0b0;
+    --hint-bg: #1a1a1a;
+    --hint-border: #2a2a2a;
+    --hint-fg: #555;
+    --hint-stat: #7a7a6a;
+    --hint-act: #8a9a78;
+    --novel: #b8c4a8;
+    --log-time: #5a5a5a;
+    --hover-bg: #2a2a2a;
+    --muted: #6a6a6a;
+    --dim: #5a5a5a;
+    --link: #b8c4a8;
+    --tip: #4a5a3a;
+    --hit-bg: #4a4420;
+    --hit-fg: #ffe08a;
+    --hit-cur-bg: #6e5a12;
+    --hit-cur-fg: #fff3c4;
+    --hit-cur-outline: #b89a3a;
+    --ctip: #5a5a4a;
+    --grep-ch: #6a8a5a;
+    --grep-snip: #b0b0a0;
+  }
+  /* ===== 浅色主题(伪装成浅色终端 / IDE 控制台) ===== */
+  :root[data-theme="light"] {
+    --bg: #f4f4f4;
+    --fg: #333333;
+    --green: #1a7a3a;
+    --blue: #1a5ab0;
+    --yellow: #9a6b00;
+    --gray: #888888;
+    --red: #c0392b;
+    --prompt: #1a7a3a;
+    --titlebar-bg: #dcdcdc;
+    --titlebar-border: #c4c4c4;
+    --title-text: #666666;
+    --hint-bg: #e8e8e8;
+    --hint-border: #d0d0d0;
+    --hint-fg: #777777;
+    --hint-stat: #8a6a3a;
+    --hint-act: #4a7a3a;
+    --novel: #2a2a2a;
+    --log-time: #aaaaaa;
+    --hover-bg: #d6d6d6;
+    --muted: #888888;
+    --dim: #aaaaaa;
+    --link: #2a6a3a;
+    --tip: #8a8a6a;
+    --hit-bg: #fff3a0;
+    --hit-fg: #5a4a00;
+    --hit-cur-bg: #ffd633;
+    --hit-cur-fg: #3a2a00;
+    --hit-cur-outline: #c8a020;
+    --ctip: #8a8a6a;
+    --grep-ch: #4a7a3a;
+    --grep-snip: #555555;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
@@ -25,18 +83,18 @@
   /* 标题栏:伪装成 macOS 终端 */
   #titlebar {
     height: 30px;
-    background: #323233;
+    background: var(--titlebar-bg);
     display: flex;
     align-items: center;
     padding: 0 12px 0 80px;
     -webkit-app-region: drag;
     user-select: none;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 1px solid var(--titlebar-border);
   }
   #title-text {
     flex: 1;
     text-align: center;
-    color: #b0b0b0;
+    color: var(--title-text);
     font-size: 12px;
     letter-spacing: 0.3px;
   }
@@ -61,12 +119,12 @@
   .prompt-host { color: var(--fg); }
   .prompt-path { color: var(--blue); }
   .cmd { color: var(--fg); }
-  .novel-body { color: #b8c4a8; }
+  .novel-body { color: var(--novel); }
   .log-info { color: var(--gray); }
   .log-ok { color: var(--green); }
   .log-warn { color: var(--yellow); }
   .log-err { color: var(--red); }
-  .log-time { color: #5a5a5a; }
+  .log-time { color: var(--log-time); }
   .lvl { white-space: pre; }
   .lvltext {
     display: inline-block;
@@ -74,13 +132,13 @@
     text-align: center;
   }
   .hint {
-    color: #555;
+    color: var(--hint-fg);
     font-size: 12px;
     padding: 2px 14px;
-    background: #1a1a1a;
+    background: var(--hint-bg);
     height: 24px;
     line-height: 24px;
-    border-top: 1px solid #2a2a2a;
+    border-top: 1px solid var(--hint-border);
     user-select: none;
     white-space: nowrap;
     overflow: hidden;
@@ -89,7 +147,7 @@
     gap: 12px;
   }
   .hint .spacer { flex: 1 1 auto; min-width: 8px; }
-  .hint .hstat { flex: 0 0 auto; color: #7a7a6a; white-space: nowrap; }
+  .hint .hstat { flex: 0 0 auto; color: var(--hint-stat); white-space: nowrap; }
   .hint .htxt {
     flex: 0 1 auto;
     min-width: 0;
@@ -98,7 +156,7 @@
   }
   .hint .act {
     flex: 0 0 auto;
-    color: #8a9a78;
+    color: var(--hint-act);
     cursor: pointer;
     -webkit-app-region: no-drag;
     white-space: nowrap;
@@ -106,21 +164,21 @@
   .hint .act:hover { color: var(--green); text-decoration: underline; }
   .open-cmd { cursor: pointer; }
   .open-cmd:hover .cmd { text-decoration: underline; }
-  .open-cmd .blink-hint { color: #4a5a3a; margin-left: 8px; font-size: 12px; }
+  .open-cmd .blink-hint { color: var(--tip); margin-left: 8px; font-size: 12px; }
   .shelf { margin: 8px 0; }
   .shelf-item {
     display: flex; align-items: center; gap: 12px;
     padding: 4px 6px; border-radius: 4px;
   }
-  .shelf-item:hover { background: #2a2a2a; }
-  .shelf-name { color: #b8c4a8; cursor: pointer; flex: 1; }
+  .shelf-item:hover { background: var(--hover-bg); }
+  .shelf-name { color: var(--link); cursor: pointer; flex: 1; }
   .shelf-name:hover { color: var(--green); text-decoration: underline; }
-  .shelf-prog { color: #6a6a6a; font-size: 12px; }
-  .shelf-del { color: #5a5a5a; cursor: pointer; padding: 0 4px; }
+  .shelf-prog { color: var(--muted); font-size: 12px; }
+  .shelf-del { color: var(--dim); cursor: pointer; padding: 0 4px; }
   .shelf-del:hover { color: var(--red); }
   .shelf-miss { color: var(--yellow); font-size: 12px; }
-  .shelf-empty { color: #6a6a6a; padding: 8px 6px; }
-  .shelf-foot { margin-top: 10px; color: #5a5a5a; }
+  .shelf-empty { color: var(--muted); padding: 8px 6px; }
+  .shelf-foot { margin-top: 10px; color: var(--dim); }
   .cursor {
     display: inline-block;
     width: 8px; height: 15px;
@@ -129,42 +187,42 @@
     vertical-align: text-bottom;
   }
   @keyframes blink { 50% { opacity: 0; } }
-  .empty-tip { color: #6a6a6a; }
+  .empty-tip { color: var(--muted); }
   /* 正文内关键字高亮(伪装成日志里的高亮匹配) */
   mark.hit {
-    background: #4a4420; color: #ffe08a;
+    background: var(--hit-bg); color: var(--hit-fg);
     border-radius: 2px; padding: 0 1px;
   }
-  mark.hit.cur { background: #6e5a12; color: #fff3c4; outline: 1px solid #b89a3a; }
+  mark.hit.cur { background: var(--hit-cur-bg); color: var(--hit-cur-fg); outline: 1px solid var(--hit-cur-outline); }
   /* 命令行输入面板:伪装成在终端里敲命令 */
   .cmdline { color: var(--gray); margin: 2px 0; }
   .cmdline .cinput {
     background: transparent; border: none; outline: none;
     color: var(--fg); font: inherit; width: 60%; caret-color: var(--green);
   }
-  .cmdline .ctip { color: #5a5a4a; font-size: 12px; margin-left: 8px; }
+  .cmdline .ctip { color: var(--ctip); font-size: 12px; margin-left: 8px; }
   /* grep 结果列表 */
   .grep-list { margin: 6px 0; }
   .grep-row {
     display: flex; gap: 10px; padding: 3px 6px; border-radius: 4px;
     cursor: pointer; align-items: baseline;
   }
-  .grep-row:hover, .grep-row.sel { background: #2a2a2a; }
-  .grep-ch { color: #6a8a5a; flex: 0 0 auto; font-size: 12px; min-width: 84px; }
-  .grep-snip { color: #b0b0a0; flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .grep-snip mark { background: #4a4420; color: #ffe08a; }
-  .grep-empty { color: #6a6a6a; padding: 6px; }
+  .grep-row:hover, .grep-row.sel { background: var(--hover-bg); }
+  .grep-ch { color: var(--grep-ch); flex: 0 0 auto; font-size: 12px; min-width: 84px; }
+  .grep-snip { color: var(--grep-snip); flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .grep-snip mark { background: var(--hit-bg); color: var(--hit-fg); }
+  .grep-empty { color: var(--muted); padding: 6px; }
   /* 章节跳转列表 */
   .goto-list { margin: 6px 0; }
   .goto-row {
     display: flex; gap: 10px; padding: 3px 6px; border-radius: 4px;
     cursor: pointer; align-items: baseline;
   }
-  .goto-row:hover, .goto-row.sel { background: #2a2a2a; }
+  .goto-row:hover, .goto-row.sel { background: var(--hover-bg); }
   .goto-row.now { color: var(--green); }
-  .goto-idx { color: #6a6a6a; flex: 0 0 auto; min-width: 44px; font-size: 12px; }
-  .goto-title { color: #b8c4a8; flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .goto-row .goto-title mark { background: #4a4420; color: #ffe08a; }
+  .goto-idx { color: var(--muted); flex: 0 0 auto; min-width: 44px; font-size: 12px; }
+  .goto-title { color: var(--link); flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .goto-row .goto-title mark { background: var(--hit-bg); color: var(--hit-fg); }
 </style>
 </head>
 <body>
@@ -195,6 +253,22 @@
   let activeQuery = '';         // 进入某章后要在正文里高亮的词(空=不高亮)
   let hitIndex = 0;             // n/N 在本章命中之间跳转的游标
   let panelReturnTo = 'reading';// 退出命令面板回到哪里
+
+  // ===== 主题切换(dark / light)=====
+  function applyTheme(t) {
+    document.documentElement.dataset.theme = (t === 'light') ? 'light' : 'dark';
+    try { localStorage.setItem('theme', t); } catch (e) {}
+  }
+  function toggleTheme() {
+    const cur = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+    applyTheme(cur === 'light' ? 'dark' : 'light');
+  }
+  // 启动恢复(默认 dark 最安全)
+  (function initTheme() {
+    let saved = 'dark';
+    try { saved = localStorage.getItem('theme') || 'dark'; } catch (e) {}
+    applyTheme(saved);
+  })();
 
   // ===== 进度保存(防抖 + 立即两种)=====
   function currentScrollRatio() {
@@ -414,15 +488,16 @@
       }).join('') + '</div>';
       return { html, list };
     }
-    function render() {
-      const { html } = rowsHtml();
+    // 框架只构建一次:input 永不重建,否则中文输入法合成会被 DOM 重建打断
+    function buildFrame() {
       term.innerHTML =
         '<div>' + PROMPT + '<span class="cmd">cd ./chapters/</span></div>' +
         '<div class="cmdline">' + PROMPT +
           '<input class="cinput" id="goto-input" autocomplete="off" spellcheck="false" ' +
-          'placeholder="输入章号(如 28)或章节标题关键字" value="' + esc(filter) + '">' +
+          'placeholder="输入章号(如 28)或章节标题关键字">' +
           '<span class="ctip">↑↓ 选择 · 回车跳转 · esc 返回</span>' +
-        '</div>' + html;
+        '</div>' +
+        '<div id="goto-list"></div>';
       hint.style.display = '';
       hint.innerHTML = '<span class="hstat">跳转章节</span><span class="htxt">共 ' +
         chapters.length + ' 章</span><span class="spacer"></span><span class="act" id="goto-close">← 返回</span>';
@@ -430,13 +505,20 @@
       const inp = document.getElementById('goto-input');
       if (inp) {
         inp.focus();
-        // 光标移到末尾
-        const v = inp.value; inp.value = ''; inp.value = v;
-        inp.oninput = () => { filter = inp.value; sel = -999; render(); };
+        // 只刷新下方列表容器,绝不重建 input
+        inp.oninput = () => { filter = inp.value; sel = -999; updateList(); };
       }
+    }
+    // 只更新列表容器的内容(input 不受影响)
+    function updateList() {
+      const { html } = rowsHtml();
+      const box = document.getElementById('goto-list');
+      if (box) box.innerHTML = html;
       term.querySelectorAll('.goto-row').forEach(el => {
         el.onclick = () => jumpToChapter(parseInt(el.getAttribute('data-idx'), 10));
       });
+      const selEl = term.querySelector('.goto-row.sel');
+      if (selEl) selEl.scrollIntoView({ block: 'nearest' });
     }
     // 面板内键盘(章号/方向/回车)
     panelKeyHandler = (e) => {
@@ -461,12 +543,11 @@
         if (p < 0) p = 0;
         p = (p + (e.key === 'ArrowDown' ? 1 : -1) + ids.length) % ids.length;
         sel = ids[p];
-        render();
-        const selEl = term.querySelector('.goto-row.sel');
-        if (selEl) selEl.scrollIntoView({ block: 'nearest' });
+        updateList();
       }
     };
-    render();
+    buildFrame();
+    updateList();
   }
   function jumpToChapter(idx) {
     chapterIdx = Math.max(0, Math.min(idx, chapters.length - 1));
@@ -507,7 +588,25 @@
         if (count) results.push({ ci, count, snip: firstSnip });
       });
     }
-    function render() {
+    // 框架只构建一次:input 永不重建,否则中文输入法合成会被 DOM 重建打断
+    function buildFrame() {
+      term.innerHTML =
+        '<div>' + PROMPT + '<span class="cmd">grep -rn "" ./logs/</span></div>' +
+        '<div class="cmdline">' + PROMPT +
+          '<input class="cinput" id="find-input" autocomplete="off" spellcheck="false" ' +
+          'placeholder="输入正文关键字">' +
+          '<span class="ctip">↑↓ 选择 · 回车跳转 · esc 返回</span>' +
+        '</div>' +
+        '<div id="find-list"></div>';
+      hint.style.display = '';
+      const inp = document.getElementById('find-input');
+      if (inp) {
+        inp.focus();
+        inp.oninput = () => { query = inp.value; sel = 0; updateList(); };
+      }
+    }
+    // 只更新列表容器 + 底栏计数(input 不受影响)
+    function updateList() {
       compute();
       const q = query.trim();
       let listHtml;
@@ -525,24 +624,17 @@
         }).join('') + '</div>';
       }
       const totalHits = results.reduce((a, r) => a + r.count, 0);
-      term.innerHTML =
-        '<div>' + PROMPT + '<span class="cmd">grep -rn "" ./logs/</span></div>' +
-        '<div class="cmdline">' + PROMPT +
-          '<input class="cinput" id="find-input" autocomplete="off" spellcheck="false" ' +
-          'placeholder="输入正文关键字" value="' + esc(query) + '">' +
-          '<span class="ctip">↑↓ 选择 · 回车跳转 · esc 返回</span>' +
-        '</div>' + listHtml;
-      hint.style.display = '';
+      const box = document.getElementById('find-list');
+      if (box) box.innerHTML = listHtml;
       hint.innerHTML = '<span class="hstat">全文搜索</span><span class="htxt">' +
         (q ? (results.length + ' 章命中 · 共 ' + totalHits + ' 处') : '回车跳到该章命中处') +
         '</span><span class="spacer"></span><span class="act" id="find-close">← 返回</span>';
       const fc = document.getElementById('find-close'); if (fc) fc.onclick = closePanel;
-      const inp = document.getElementById('find-input');
-      if (inp) { inp.focus(); const v = inp.value; inp.value = ''; inp.value = v;
-        inp.oninput = () => { query = inp.value; sel = 0; render(); }; }
       term.querySelectorAll('.grep-row').forEach(el => {
         el.onclick = () => jumpToResult(results[parseInt(el.getAttribute('data-ri'), 10)], query.trim());
       });
+      const selEl = term.querySelector('.grep-row.sel');
+      if (selEl) selEl.scrollIntoView({ block: 'nearest' });
     }
     panelKeyHandler = (e) => {
       if (e.key === 'Escape') { e.preventDefault(); closePanel(); return; }
@@ -555,12 +647,11 @@
         if (!results.length) return;
         e.preventDefault();
         sel = (sel + (e.key === 'ArrowDown' ? 1 : -1) + results.length) % results.length;
-        render();
-        const selEl = term.querySelector('.grep-row.sel');
-        if (selEl) selEl.scrollIntoView({ block: 'nearest' });
+        updateList();
       }
     };
-    render();
+    buildFrame();
+    updateList();
   }
   function jumpToResult(r, q) {
     if (!r) return;
@@ -833,6 +924,10 @@
 
   // ===== 键盘 =====
   document.addEventListener('keydown', (e) => {
+    // 中文输入法合成中(拼音候选未上屏):放行所有按键给输入法,绝不拦截,
+    // 否则面板里无法输入中文(空格/回车/方向键会被当成快捷键吃掉)
+    // isComposing: 标准合成标志;keyCode===229: 合成态通用标志键码(兼容旧实现)
+    if (e.isComposing || e.keyCode === 229) return;
     // 命令面板(跳章/搜索)态:输入框在焦点,交给面板自己的处理器
     if (mode === 'panel') {
       if (panelKeyHandler) panelKeyHandler(e);
@@ -843,6 +938,12 @@
       e.preventDefault();
       if (mode === 'shelf') exitShelf();   // 在书架按空格:回到来源(阅读则恢复位置)
       else toggle();                        // 阅读/伪装互切
+      return;
+    }
+    // t:切换深/浅主题(任何态都可切)
+    if (e.key === 't') {
+      e.preventDefault();
+      toggleTheme();
       return;
     }
     if (mode === 'reading') {

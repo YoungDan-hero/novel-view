@@ -47,8 +47,8 @@ function createWindow() {
   win = new BrowserWindow({
     width: 900,
     height: 560,
-    minWidth: 520,
-    minHeight: 320,
+    minWidth: 120,    // 允许极度缩小,只剩标题栏也能缩
+    minHeight: 30,    // 仅标题栏高度,几乎贴底
     title: 'Terminal',
     backgroundColor: '#1e1e1e',
     titleBarStyle: 'hiddenInset',
