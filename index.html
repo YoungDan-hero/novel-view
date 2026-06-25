@@ -546,6 +546,8 @@
     // 绑定顶部 open 行点击导入
     const oc = document.getElementById('open-cmd');
     if (oc) oc.onclick = importNovel;
+    // ghost 模式下:重建了 .novel-body,需重新套 ghost 文字样式(字号/行高/字间距/颜色)
+    if (ghostMode) applyGhostStyle();
   }
 
   // ===== 搜索 / 跳转:核心工具 =====
